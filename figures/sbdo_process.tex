@@ -1,0 +1,189 @@
+\documentclass[tikz,border=3.14mm]{standalone}
+\usetikzlibrary{shapes, arrows.meta, calc, fit, backgrounds, shapes.multipart, positioning}
+
+% Declare layers --  if you need containers within containters
+\pgfdeclarelayer{behind}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{behind,background,main,foreground}
+
+% Set global box styles and text sizes
+\tikzset{box/.style={draw, rectangle, rounded corners, thick, node distance=7em, text width=6em, text centered, minimum height=3.2em}}
+\tikzset{every node/.append style={font=\scriptize\selectfont}}
+
+\begin{document}
+% Set block styles
+\tikzset{
+	block/.style={rectangle split, draw, rectangle split parts=2, text width=10em, text centered, rounded corners, minimum height=4em}, 
+	grnblock/.style={rectangle, draw, fill=green!20, text width=10em, text centered, rounded corners, minimum height=4em},
+	whtblock/.style={rectangle, draw, fill=white!20, text width=10em, text centered, rounded corners, minimum height=4em},
+	line/.style={draw, -{Latex[length=2mm, width=1mm]}},
+	cloud/.style={draw, ellipse, fill=white!20, node distance=3cm, minimum height=4em},
+	container/.style={draw, rectangle, dashed, inner sep=0.28cm, rounded corners, fill=yellow!20, minimum height=4cm},
+	decision/.style={diamond, text width=6em, minimum height=2em, text centered, draw=black, rounded corners,fill=green!30}
+}
+%\tikzset{fit margins/.style={/tikz/afit/.cd,#1,
+%		/tikz/.cd,
+%		inner xsep=\pgfkeysvalueof{/tikz/afit/left}+\pgfkeysvalueof{/tikz/afit/right},
+%		inner ysep=\pgfkeysvalueof{/tikz/afit/top}+\pgfkeysvalueof{/tikz/afit/bottom},
+%		xshift=-\pgfkeysvalueof{/tikz/afit/left}+\pgfkeysvalueof{/tikz/afit/right},
+%		yshift=-\pgfkeysvalueof{/tikz/afit/bottom}+\pgfkeysvalueof{/tikz/afit/top}},
+%	afit/.cd,left/.initial=2pt,right/.initial=2pt,bottom/.initial=2pt,top/.initial=2pt}
+
+\begin{tikzpicture}[node distance=1.25cm, auto]
+% INTIAL DESIGN BLOCK %
+\node % Initial design
+[whtblock, font=\fontsize{10}{0}\selectfont] 
+(id) 
+{Initial Design};
+
+\node % System analysis models
+[block, below=of id, rectangle split part fill={orange!20,blue!5}, font=\fontsize{10}{0}\selectfont] 
+(SAMs) 
+{\textbf{System Analysis Models} \nodepart{two} CFD, analytical, experimental, \textit{etc.}};
+
+\node % Design variables
+[block, below left=of SAMs.south, text width=5em, rectangle split part fill={orange!20,blue!5}, font=\fontsize{10}{0}\selectfont] 
+(DVs) 
+{\textbf{Design Variables} \nodepart{two}$x_{1}, \ x_{2},$ \\ $x_{3}, \ \dots, \ x_{i}$};
+
+\node % Objective functions
+[block, below right=of SAMs.south, text width=5em, rectangle split part fill={orange!20,blue!5}, font=\fontsize{10}{0}\selectfont] 
+(OFs) 
+{\textbf{Objective Functions} \nodepart{two}$f_{1}, \ f_{2},$ \\ $f_{3}, \ \dots, \ f_{j}$};
+
+%-----------------------------------------------------------
+% SURROGATE MODEL GENERATION %
+\node % Sampling
+[block, right=6cm of id.north east, anchor=north west, rectangle split part fill={orange!20,blue!5}, font=\fontsize{10}{0}\selectfont] 
+(samp) 
+{\textbf{Generate sample points} \nodepart{two}Design of experiments: latin hypercube sampling, central composite design, orthogonal design, \textit{etc.}};
+
+\node % Compute objectives
+[whtblock, right=of samp, font=\fontsize{10}{0}\selectfont] 
+(objComps) 
+{Compute Objective Values};
+
+\node % Assemble the training database
+[whtblock, below=2cm of $(samp)!0.5!(objComps)$, font=\fontsize{10}{0}\selectfont] 
+(database) 
+{Assemble training set database};
+
+\node % Surrogate modeling method selection
+[block, below=of database, rectangle split part fill={orange!20,blue!5}, font=\fontsize{10}{0}\selectfont] 
+(MS) 
+{\textbf{Model Selection} \nodepart{two}Concurrent surrogate model selection (COSMOS) framework};
+
+\node % Accuracy check
+[decision, below=of MS, font=\fontsize{10}{0}\selectfont] 
+(acc) 
+{Desired Accuracy?};
+
+\node % Surrogate model complete
+[whtblock, below=of acc, font=\fontsize{10}{0}\selectfont] 
+(smObj) 
+{Surrogate model complete};
+
+%-----------------------------------------------------------
+% OPTIMIZATION %
+\node 
+[block, right=11cm of samp.north east, anchor=north west, rectangle split part fill={orange!20,blue!5}, font=\fontsize{10}{0}\selectfont] 
+(optSel) 
+{\textbf{Optimization Methodology Selection} \nodepart{two}Genetic algorithms, particle swarm optimization, \textit{etc.}};
+
+\node % Initialize optimization
+[whtblock,  below left=of optSel.south, text width=6em, font=\fontsize{10}{0}\selectfont] 
+(init) 
+{Initialization};
+
+\node % Optimization parameter selection
+[whtblock,  below right=of optSel.south, text width=6em, font=\fontsize{10}{0}\selectfont] 
+(parSel) 
+{Select algorithm parameters};
+
+\node % Execute optimizaiton
+[whtblock, below=of $(init)!0.5!(parSel)$, font=\fontsize{10}{0}\selectfont] 
+(optExct) 
+{Execute Optimization};
+
+\node % Optimal Design
+[whtblock,  below=of optExct, font=\fontsize{10}{0}\selectfont] 
+(optDesign) 
+{Optimal Design};
+
+%-----------------------------------------------------------
+% FINALIZATION OF DESIGN %
+\node % Optimality check
+[decision, right=7cm of optSel.north east, anchor=north, font=\fontsize{10}{0}\selectfont] 
+(optAch) 
+{Viable Design?};
+
+\node % Optimality check
+[decision, right= of optAch, font=\fontsize{10}{0}\selectfont] 
+(fdAcc) 
+{Predicted performance accurate?};
+
+\node % Final design
+[whtblock,  right=of fdAcc, font=\fontsize{10}{0}\selectfont] 
+(complete) 
+{Optimization Complete};
+
+% Build containers
+\begin{scope}[on background layer]
+	% Problem formulation
+	\coordinate [font=\fontsize{10}{0}\selectfont] (aux1) at ([yshift=3mm]id.north);
+	\node [container, fit=(aux1) (DVs)(OFs), font=\fontsize{10}{0}\selectfont] (initialDesign) {};
+	\node at (initialDesign.north) [fill=white, draw, rounded corners, font=\fontsize{12}{0}\selectfont] {\textbf{Problem Formulation}};
+	%-----------------------------------------------------------
+	% Surrogate modeling
+	\coordinate [font=\fontsize{10}{0}\selectfont] (aux2) at ([yshift=3mm]samp.north);
+	\node [container, fit=(aux2) (samp) (objComps) (MS) (acc) (smObj), font=\fontsize{10}{0}\selectfont] (smg) {};
+	\node at (smg.north) [fill=white, draw, rounded corners, font=\fontsize{12}{0}\selectfont] {\textbf{Surrogate} \textbf{Model Generation}};
+	%-----------------------------------------------------------
+	% Optimization
+	\coordinate [font=\fontsize{10}{0}\selectfont] (aux3) at ([yshift=3mm]optSel.north);
+	\node [container, fit=(aux3) (optSel) (init) (parSel) (optExct) (optDesign), font=\fontsize{10}{0}\selectfont] (opt) {};
+	\node at (opt.north) [fill=white, draw, rounded corners, font=\fontsize{12}{0}\selectfont] {\textbf{Optimization Process}};
+	
+	%-----------------------------------------------------------
+	% Validate final design
+	\coordinate [font=\fontsize{10}{0}\selectfont](aux4) at ([yshift=3mm]optAch.north);
+	\coordinate [font=\fontsize{10}{0}\selectfont](aux5) at ([yshift=-3mm]fdAcc.south);
+	\node [container, fit=(aux4) (aux5) (optAch) (fdAcc) (complete), font=\fontsize{10}{0}\selectfont] (vfd) {};
+	\node at (vfd.north) [fill=white, draw, rounded corners, font=\fontsize{12}{0}\selectfont] {\textbf{Final Design Validation}};
+\end{scope}
+
+% Problem formulation connections
+\path [line] (id) -- (SAMs);
+\path [line] (SAMs) -- ([yshift=-3mm]SAMs.south) -| (DVs);
+\path [line] (SAMs) -- ([yshift=-3mm]SAMs.south) -| (OFs);
+%-----------------------------------------------------------
+%Surrogate model generation connections
+\path [line] (samp) -- (objComps);
+\path [line] (samp) -- (database);
+\path [line] (objComps) -- (database);
+\path [line] (database) -- (MS);
+\path [line] (MS) -- (acc);
+\path [line, dashed] (acc) -| (samp) node[pos=0.5, font=\fontsize{10}{0}\selectfont]{No} node[pos=0.75, font=\fontsize{10}{0}\selectfont]{Re-sample};
+\path [line, dashed] (acc) -- (smObj) node[pos=0.5, font=\fontsize{10}{0}\selectfont]{Yes};
+%-----------------------------------------------------------
+%Optimization process connections
+\path [line] (optSel) -- (init);
+\path [line] (optSel) -- (parSel);
+\path [line] (init) -- (optExct);
+\path [line] (parSel) -- (optExct);
+\path [line] (optExct) -- (optDesign);
+%\path [line] (optDesign) -| ([xshift=-2.5cm]optAch.west) -- (optAch);
+\path [line, dashed] (optAch) |- ([yshift=-3mm]smg.south) node[pos=0.01, font=\fontsize{10}{0}\selectfont]{No} -| (initialDesign.south) node[pos=0.75, font=\fontsize{10}{0}\selectfont]{Re-formulate problem};
+\path [line, dashed] (optAch) -- (fdAcc) node[pos=0.5, font=\fontsize{10}{0}\selectfont]{Yes};
+\path [line, dashed] (fdAcc) |- ([yshift=-8mm]smg.south) node[pos=0.01, font=\fontsize{10}{0}\selectfont]{No} node[pos=0.75, font=\fontsize{10}{0}\selectfont]{Re-sample} -- (smg.south);
+\path [line] (fdAcc) -- (complete) node[pos=0.5, font=\fontsize{10}{0}\selectfont]{Yes};
+%-----------------------------------------------------------
+% Connections between blocks
+\path [line] ([yshift=-10mm]initialDesign-|initialDesign.east) -- ([yshift=-10mm]initialDesign-|smg.west) node[yshift=2mm, grnblock, pos=0.5, text width = 2cm, font=\fontsize{10}{0}\selectfont]{Analyses models for objective computations};
+\path [line] ([yshift=-10mm]initialDesign-|smg.east) -- ([yshift=-10mm]initialDesign-|opt.west) node[yshift=2mm, grnblock, pos=0.5, text width = 2cm, font=\fontsize{10}{0}\selectfont]{Surrogate models replace analyses models for objective computations};
+\path [line] ([yshift=-10mm]initialDesign-|opt.east) -- ([yshift=-10mm]initialDesign-|vfd.west) node[yshift=2mm, grnblock, pos=0.5, text width = 2cm, font=\fontsize{10}{0}\selectfont]{Optimal design}  -- (vfd.south west);
+
+\end{tikzpicture}
+
+\end{document}

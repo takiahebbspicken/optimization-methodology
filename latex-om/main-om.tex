@@ -1,0 +1,189 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc} % Input encoding package
+\usepackage[top=25mm, bottom=25mm, left=25mm, right=25mm]{geometry} % Page size and margins
+
+% Math packages
+\usepackage{amsmath} % American Mathematical society package cmex10 
+\usepackage{amssymb} % Extended symbol collection
+\usepackage{amsthm} % For defining theorem-like structures
+\usepackage{mathtools} % Enhanced math
+\usepackage{mathptmx} % Math times new roman text
+\usepackage{bm} % Bold math symbols
+\usepackage{mathrsfs} % Math script font
+
+% Figure and table packages
+\usepackage{graphicx} % Image management
+\usepackage{float} % Define floating figures or tables
+\usepackage{adjustbox} % Change size of figures or tables to fill certain sizes
+\usepackage{array} % Extended array and tabular environments
+\usepackage{subcaption, booktabs, multicol, multirow} % Subfigures
+\usepackage{hhline} % Better horizonal lines in tabular and array environments
+\usepackage{caption} % Caption customization in figure and table floating environments
+
+% Spacing and styling
+\usepackage{setspace} % Single spacing envrionments
+\usepackage{parskip} % Paragraph spacing
+\usepackage{lscape} % Put parts of document in landscape orientation
+\usepackage{titlesec} % Title styling
+\usepackage{paralist} % Can use enumerate and itemize environements in paragraphs
+\usepackage{color} % Colored text
+\usepackage[colorlinks, citecolor=black, linkcolor=black, linktocpage=true]{hyperref} % Cross referencing
+
+% Environment packages
+\usepackage{enumerate} % Numbered lists
+\usepackage{listings} % Typeset code
+\usepackage[framed,numbered]{mcode} % Typeset matlab code specifically
+\usepackage[toc,page]{appendix} % Appendices 
+\usepackage[acronym, nopostdot]{glossaries} % Glossary with acronyms and no dots after entries 
+
+% Bibliography packages
+\usepackage{cite} % Improved numeric citations
+
+\newenvironment{RomanPagenumber}[1]
+{\setcounter{page}{#1}\renewcommand{\thepage}{\Roman{page}}}
+{\pagenumbering{arabic}}
+
+\newenvironment{romanPagenumber}[1]
+{\setcounter{page}{#1}\renewcommand{\thepage}{\roman{page}}}
+{\pagenumbering{arabic}}
+
+\newenvironment{arabicPagenumber}[1]
+{\setcounter{page}{#1}\renewcommand{\thepage}{\arabic{page}}}
+{\pagenumbering{arabic}}
+
+\newenvironment{AlphPagenumber}[1]
+{\setcounter{page}{#1}\renewcommand{\thepage}{\Alph{page}}}
+{\pagenumbering{arabic}}
+
+\newenvironment{alphPagenumber}[1]
+{\setcounter{page}{#1}\renewcommand{\thepage}{\alph{page}}}
+{\pagenumbering{arabic}}
+
+% Packed lists
+\newenvironment{packed_enum}{
+	\begin{enumerate}
+		\setlength{\itemsep}{1pt}
+		\setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+	}{\end{enumerate}}
+
+\newenvironment{packed_itemize}{
+	\begin{itemize}
+		\setlength{\itemsep}{1pt}
+		\setlength{\parskip}{0pt}
+		\setlength{\parsep}{0pt}
+	}{\end{itemize}}
+
+\usepackage{fancyhdr, lastpage}
+\pagestyle{fancy}
+\lhead{}
+\rhead{} 
+\chead{} 
+\lfoot{}
+\cfoot{}
+\rfoot{\small Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.0pt} 
+\renewcommand{\footrulewidth}{0.75pt}
+
+% spacing
+\setlength{\parskip}{5pt}
+% \setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{25pt}
+\setlength{\belowcaptionskip}{-10pt}
+
+% \titlespacing*{<command>}{<left>}{<before-sep>}{<after-sep>}
+\titlespacing*{\section}{0pt}{7.5pt}{0pt}
+\titlespacing*{\subsection}{0pt}{7.5pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{7.5pt}{0pt}
+\captionsetup[table]{skip=0pt}  
+
+\date{\today}
+%\doublespacing
+
+%\makeglossaries
+%\input{glossary.tex}
+
+\begin{document}
+\begin{titlepage}
+	\pagenumbering{gobble} % Turns page numbering off for title page
+	%\maketitle %Use if logo not needed
+	\centering
+	\vfill
+	\Huge{
+		\textbf{Optimal Phase-Change-Material Properties for Battery Thermal Management: A Multi-objective Design Optimization Approach} 
+	}
+	\\ 
+	\medskip
+	\large{
+		Authors: Takiah Ebbs-Picken\textsuperscript{a,}\footnote{Corresponding author, e-mail: takiah.ebbspicken@mail.utoronto.ca}, Carlos M. Da Silva\textsuperscript{a}, and Cristina H. Amon\textsuperscript{a}
+	}
+	\\
+	\medskip
+	\small{
+		\textsuperscript{a} Department of Mechanical and Industrial Engineering, ATOMS Laboratory, University of Toronto, 5 King’s College Road, Toronto, ON M5S 3G8, Canada
+		\\
+		
+	}
+	\vfill
+\end{titlepage}
+
+\clearpage % new page
+
+\begin{romanPagenumber}{2} %Roman numeral page numbering before report begins (for abstract, acknoledgements, table of contents, etc.)
+	
+\section*{Highlights}
+\addcontentsline{toc}{section}{Highlights}%
+%85 char max, 3 - 5 bullets
+\begin{itemize}
+	\item XYZ
+\end{itemize}
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}%
+
+
+\section*{Keywords}
+\addcontentsline{toc}{section}{Keywords}%
+Battery thermal management; battery cooling; design optimization
+
+\newpage
+
+
+\tableofcontents %Add table of contents
+\clearpage
+\addcontentsline{toc}{section}{\protect\numberline{Nomenclature}}
+\begin{scriptsize}
+	\begin{multicols}{2}
+%		\printglossary[type=\acronymtype,title={Nomenclature}, nonumberlist]
+%		\printglossary[title=Nomenclature]
+	\end{multicols}
+\end{scriptsize}
+
+\clearpage
+\end{romanPagenumber} %End roman numeral page numbering
+
+\pagenumbering{arabic} %Start regular Numbering
+
+\section{Introduction}
+\label{sec:intro}
+
+
+\clearpage
+%Bibliography
+\addcontentsline{toc}{section}{References}
+\begin{multicols}{2}
+	\begin{scriptsize}
+		\begin{singlespace}
+			\bibliography{references-om}
+			\bibliographystyle{ieeetr}
+		\end{singlespace}
+	\end{scriptsize}
+\end{multicols}
+%	
+	
+%\clearpage
+%\begin{appendices} %Appendices
+%\section{Code}
+%\label{appendix:code}
+%\end{appendices}
+\end{document}
