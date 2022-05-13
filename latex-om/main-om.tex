@@ -32,7 +32,7 @@
 % Environment packages
 \usepackage{enumerate} % Numbered lists
 \usepackage{listings} % Typeset code
-\usepackage[framed,numbered]{mcode} % Typeset matlab code specifically
+%\usepackage[framed,numbered]{mcode} % Typeset matlab code specifically
 \usepackage[toc,page]{appendix} % Appendices 
 \usepackage[acronym, nopostdot]{glossaries} % Glossary with acronyms and no dots after entries 
 
@@ -80,8 +80,8 @@
 \rhead{} 
 \chead{} 
 \lfoot{}
-\cfoot{}
-\rfoot{\small Page \thepage\ of \pageref{LastPage}}
+\cfoot{\small \thepage}
+\rfoot{}
 \renewcommand{\headrulewidth}{0.0pt} 
 \renewcommand{\footrulewidth}{0.75pt}
 
@@ -110,7 +110,7 @@
 	\centering
 	\vfill
 	\Huge{
-		\textbf{Optimal Phase-Change-Material Properties for Battery Thermal Management: A Multi-objective Design Optimization Approach} 
+		\textbf{Design Optimization of Battery Thermal Management Systems: A Surrogate-Model-Based Approach} 
 	}
 	\\ 
 	\medskip
@@ -124,29 +124,26 @@
 		\\
 		
 	}
+	\section*{Highlights}
+	\addcontentsline{toc}{section}{Highlights}%
+	%85 char max, 3 - 5 bullets
+	\begin{itemize}
+		\item XYZ
+	\end{itemize}
+	
+	\section*{Abstract}
+	\addcontentsline{toc}{section}{Abstract}%
+	
+	
+	\section*{Keywords}
+	\addcontentsline{toc}{section}{Keywords}%
+	Battery thermal management; battery cooling; design optimization
 	\vfill
 \end{titlepage}
 
 \clearpage % new page
 
 \begin{romanPagenumber}{2} %Roman numeral page numbering before report begins (for abstract, acknoledgements, table of contents, etc.)
-	
-\section*{Highlights}
-\addcontentsline{toc}{section}{Highlights}%
-%85 char max, 3 - 5 bullets
-\begin{itemize}
-	\item XYZ
-\end{itemize}
-
-\section*{Abstract}
-\addcontentsline{toc}{section}{Abstract}%
-
-
-\section*{Keywords}
-\addcontentsline{toc}{section}{Keywords}%
-Battery thermal management; battery cooling; design optimization
-
-\newpage
 
 
 \tableofcontents %Add table of contents
@@ -166,7 +163,13 @@ Battery thermal management; battery cooling; design optimization
 
 \section{Introduction}
 \label{sec:intro}
-
+Considerations: 
+\begin{itemize}
+	\item Constrain maximum temperature and maximum temperature difference (further minimization does not provide any benefits)
+	\item Implementation of adaptive sampling to limit over-sampling
+	\item Automated model selection (COSMOS or similar framework)
+	\item Once samples selected, batch run COMSOL in parallel from the command line
+\end{itemize}
 
 \clearpage
 %Bibliography
