@@ -169,6 +169,7 @@ Considerations:
 	\item Implementation of adaptive sampling to limit over-sampling
 	\item Automated model selection (COSMOS or similar framework)
 	\item Once samples selected, batch run COMSOL in parallel from the command line
+	\item During optimization when completing new CFD simulations, initiate each sim with previous solution that has closest parameter values. May result in large speed up to flow convergence
 \end{itemize}
 
 \clearpage
